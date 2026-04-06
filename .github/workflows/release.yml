@@ -86,7 +86,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew assembleAfatRelease
+        run: ./gradlew assembleAfatDebug
 
       - name: Upload
         uses: actions/upload-artifact@v3
