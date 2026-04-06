@@ -82,8 +82,10 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew assembleDebug -x lint -x test --no-daemon --no-configuration-cache --stacktrace
-
+        run: ./gradlew assembleRelease --no-daemon --max-workers=2
+        env:
+          JAVA_OPTS: "-Xmx4g -XX:MaxMetaspaceSize=1g"
+          GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -Dorg.gradle.parallel=false"
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
