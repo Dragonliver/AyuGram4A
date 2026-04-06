@@ -2,7 +2,7 @@ name: Build release APK
 on:
   push:
     branches: [ "master", "main" ]
-  workflow_dispatch:
+  workflow_dispatch: # Позволяет запускать сборку кнопкой в любое время
 
 jobs:
   build:
@@ -32,8 +32,8 @@ jobs:
           java-version: '17'
 
       - name: Build with Gradle
-        # Мы добавляем -Pandroid.builder.sdkDownload=true
-        # Это заставит Gradle САМОМУ скачать SDK, если его нет
+        # Используем .\gradlew для Windows
+        # -Pandroid.builder.sdkDownload=true заставит Gradle сам скачать SDK без ошибок 404
         run: .\gradlew assembleDebug --no-daemon -Pandroid.builder.sdkDownload=true
         env:
           GRADLE_OPTS: "-Xmx4g -Dorg.gradle.jvmargs=-Xmx4g"
@@ -42,4 +42,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: debug-APK
-          path: TMessagesProj/build/outputs/apk/debug/*.apk
+          # Две звездочки (**) заставят GitHub найти APK в любой подпапке build/outputs
+          path: TMessagesProj/build/outputs/apk/**/*.apk
+          if-no-files-found: error
