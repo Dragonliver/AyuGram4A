@@ -82,11 +82,11 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew assembleRelease --no-daemon --max-workers=1 --stacktrace
+        run: ./gradlew assembleDebug --no-daemon --max-workers=1 --stacktrace
   env:
     GRADLE_OPTS: "-Xmx5g -XX:+UseG1GC -Dorg.gradle.parallel=false -Dorg.gradle.configureondemand=false"
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: Release APK
+          name: debug APK
           path: TMessagesProj/build/outputs/apk/afat/release/*.apk
