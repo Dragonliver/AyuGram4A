@@ -31,23 +31,23 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Full Clean Build
+      - name: Build with Java Wrapper
         shell: cmd
-        # Команда ниже ищет gradlew.bat во всех папках и запускает его там, где найдет
+        # Мы ищем jar-файл градла и запускаем его напрямую через java
         run: |
-          for /r %%i in (gradlew.bat) do (
+          for /r %%i in (gradle-wrapper.jar) do (
             if exist "%%i" (
-              cd /d "%%~dpi"
-              gradlew.bat clean assembleDebug --no-daemon -Pandroid.builder.sdkDownload=true
+              echo Found wrapper at %%i
+              java -jar "%%i" assembleDebug --no-daemon -Pandroid.builder.sdkDownload=true
               exit /b 0
             )
           )
-          echo "ERROR: gradlew.bat not found!"
+          echo "FATAL: gradle-wrapper.jar not found!"
           exit /b 1
         env:
           GRADLE_OPTS: "-Xmx4g -Dorg.gradle.jvmargs=-Xmx4g"
 
-      - name: Find and Upload APK
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: debug-APK
