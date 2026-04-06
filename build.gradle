@@ -1,8 +1,9 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     repositories {
+        // Прямая ссылка на Google Maven
+        maven { url 'https://maven.google.com' }
         mavenCentral()
-        google()
+        gradlePluginPortal()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.4.2'
@@ -10,6 +11,10 @@ buildscript {
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.5'
     }
 }
-repositories {
-    google()
+
+allprojects {
+    repositories {
+        maven { url 'https://maven.google.com' }
+        mavenCentral()
+    }
 }
