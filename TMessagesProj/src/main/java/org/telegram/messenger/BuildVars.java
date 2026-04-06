@@ -42,11 +42,10 @@ public class BuildVars {
         AYU_VERSION = BuildConfig.AYU_VERSION;
 
         // Obtain your own APP_ID at https://core.telegram.org/api/obtaining_api_id
-        APP_ID = 31671752;
+        APP_ID = BuildConfig.APP_ID;
 
         // Obtain your own APP_HASH at https://core.telegram.org/api/obtaining_api_id
-        APP_HASH = e9a734e94a8126c71b4a27b4b693a56a;
-
+        APP_HASH = BuildConfig.APP_HASH;
         // Using our SMS_HASH you will not be able to get the SMS Retriever to work, generate your own keys with https://raw.githubusercontent.com/googlearchive/android-credentials/master/sms-verification/bin/sms_retriever_hash_v9.sh
         SMS_HASH = isBetaApp() ? "2P1CNXYRAK6" : "UfajQkYoxTu";
     }
