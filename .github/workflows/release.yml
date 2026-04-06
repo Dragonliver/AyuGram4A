@@ -31,17 +31,19 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Clean and Build
-        # Добавляем команду clean, чтобы удалить старые хвосты и собрать ЧИСТЫЙ файл
-        # Запускаем assemble (соберет всё, что можно)
-        run: .\gradlew clean assembleDebug --no-daemon -Pandroid.builder.sdkDownload=true
+      - name: Full Clean Build
+        # Запускаем общую сборку assemble. Она соберет все варианты APK
+        run: .\gradlew clean assemble --no-daemon -Pandroid.builder.sdkDownload=true
         env:
           GRADLE_OPTS: "-Xmx4g -Dorg.gradle.jvmargs=-Xmx4g"
+
+      - name: Find APK files
+        # Эта команда покажет в логах, где физически лежат файлы
+        run: dir /s /b *.apk
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: debug-APK
-          # Ищем вообще везде, начиная от корня
-          path: ./**/*.apk
+          name: all-APKs
+          path: "**/*.apk"
           if-no-files-found: error
