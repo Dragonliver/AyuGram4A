@@ -42,6 +42,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: debug-APK
-          # Две звездочки (**) заставят GitHub найти APK в любой подпапке build/outputs
-          path: TMessagesProj/build/outputs/apk/**/*.apk
+          # Мы убираем точный путь и просим искать во всех папках проекта
+          path: "**/*.apk"
+          # Если вдруг не найдет - выдаст ошибку, чтобы мы знали
           if-no-files-found: error
