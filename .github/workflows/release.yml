@@ -2,7 +2,7 @@ name: Build release APK
 on:
   push:
     branches: [ "master", "main" ]
-  workflow_dispatch: # Позволяет запускать сборку кнопкой в любое время
+  workflow_dispatch:
 
 jobs:
   build:
@@ -31,10 +31,10 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Build with Gradle
-        # Используем .\gradlew для Windows
-        # -Pandroid.builder.sdkDownload=true заставит Gradle сам скачать SDK без ошибок 404
-        run: .\gradlew assembleDebug --no-daemon -Pandroid.builder.sdkDownload=true
+      - name: Clean and Build
+        # Добавляем команду clean, чтобы удалить старые хвосты и собрать ЧИСТЫЙ файл
+        # Запускаем assemble (соберет всё, что можно)
+        run: .\gradlew clean assembleDebug --no-daemon -Pandroid.builder.sdkDownload=true
         env:
           GRADLE_OPTS: "-Xmx4g -Dorg.gradle.jvmargs=-Xmx4g"
 
@@ -42,7 +42,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: debug-APK
-          # Мы убираем точный путь и просим искать во всех папках проекта
-          path: "**/*.apk"
-          # Если вдруг не найдет - выдаст ошибку, чтобы мы знали
+          # Ищем вообще везде, начиная от корня
+          path: ./**/*.apk
           if-no-files-found: error
