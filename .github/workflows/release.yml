@@ -32,18 +32,22 @@ jobs:
           java-version: '17'
 
       - name: Full Clean Build
-        # Добавляем shell: cmd, чтобы Windows понимала команды без ошибок PowerShell
         shell: cmd
-        run: gradlew.bat clean assembleDebug --no-daemon -Pandroid.builder.sdkDownload=true
+        # Команда ниже ищет gradlew.bat во всех папках и запускает его там, где найдет
+        run: |
+          for /r %%i in (gradlew.bat) do (
+            if exist "%%i" (
+              cd /d "%%~dpi"
+              gradlew.bat clean assembleDebug --no-daemon -Pandroid.builder.sdkDownload=true
+              exit /b 0
+            )
+          )
+          echo "ERROR: gradlew.bat not found!"
+          exit /b 1
         env:
           GRADLE_OPTS: "-Xmx4g -Dorg.gradle.jvmargs=-Xmx4g"
 
-      - name: Find APK files
-        shell: cmd
-        # Команда dir теперь сработает правильно
-        run: dir /s /b *.apk
-
-      - name: Upload Artifact
+      - name: Find and Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: debug-APK
