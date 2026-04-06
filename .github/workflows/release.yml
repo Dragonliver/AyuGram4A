@@ -43,11 +43,6 @@ jobs:
           restore-keys: |
             gradle-builds
 
-      - name: Set up ccache
-        uses: hendrikmuhs/ccache-action@v1.2
-        with:
-          key: ccache
-          restore-keys: ccache
 
       - name: Setup Android SDK Tools
         uses: android-actions/setup-android@v2
