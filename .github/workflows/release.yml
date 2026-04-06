@@ -31,19 +31,11 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Restore/Fix Gradle Wrapper
-        shell: cmd
-        # Если gradlew.bat нет, мы просим Java создать его или используем обходной путь
-        run: |
-          if not exist "gradlew.bat" (
-            echo gradlew.bat missing, generating...
-            gradle wrapper
-          )
-
       - name: Build with Gradle
         shell: cmd
-        # Теперь запускаем через сгенерированный скрипт
-        run: gradlew.bat assembleDebug --no-daemon -Pandroid.builder.sdkDownload=true
+        # Запускаем Gradle через Java напрямую, используя classpath
+        run: |
+          java -cp gradle/wrapper/gradle-wrapper.jar org.gradle.wrapper.GradleWrapperMain assembleDebug --no-daemon -Pandroid.builder.sdkDownload=true
         env:
           GRADLE_OPTS: "-Xmx4g -Dorg.gradle.jvmargs=-Xmx4g"
 
