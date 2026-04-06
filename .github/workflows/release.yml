@@ -32,18 +32,20 @@ jobs:
           java-version: '17'
 
       - name: Full Clean Build
-        # Запускаем общую сборку assemble. Она соберет все варианты APK
-        run: .\gradlew clean assemble --no-daemon -Pandroid.builder.sdkDownload=true
+        # Добавляем shell: cmd, чтобы Windows понимала команды без ошибок PowerShell
+        shell: cmd
+        run: gradlew.bat clean assembleDebug --no-daemon -Pandroid.builder.sdkDownload=true
         env:
           GRADLE_OPTS: "-Xmx4g -Dorg.gradle.jvmargs=-Xmx4g"
 
       - name: Find APK files
-        # Эта команда покажет в логах, где физически лежат файлы
+        shell: cmd
+        # Команда dir теперь сработает правильно
         run: dir /s /b *.apk
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: all-APKs
+          name: debug-APK
           path: "**/*.apk"
           if-no-files-found: error
