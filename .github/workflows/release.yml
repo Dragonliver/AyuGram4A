@@ -1,8 +1,8 @@
 name: Build release APK
 on:
   push:
-    branches: [ "master", "main" ] # Сборка будет запускаться при пуше в эти ветки
-  workflow_dispatch: # Позволяет запускать сборку вручную кнопкой на сайте
+    branches: [ "master", "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -31,14 +31,10 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-        # Этот экшен сам скачает нужные инструменты прямо к тебе в папку раннера
-
       - name: Build with Gradle
-        # В Windows мы используем .\gradlew вместо ./gradlew
-        # Флаг --stacktrace поможет увидеть ошибки, если они будут
-        run: .\gradlew assembleDebug --no-daemon --stacktrace
+        # Мы добавляем -Pandroid.builder.sdkDownload=true
+        # Это заставит Gradle САМОМУ скачать SDK, если его нет
+        run: .\gradlew assembleDebug --no-daemon -Pandroid.builder.sdkDownload=true
         env:
           GRADLE_OPTS: "-Xmx4g -Dorg.gradle.jvmargs=-Xmx4g"
 
@@ -46,5 +42,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: debug-APK
-          # Проверь этот путь после первой сборки, в AyuGram он может немного отличаться
           path: TMessagesProj/build/outputs/apk/debug/*.apk
