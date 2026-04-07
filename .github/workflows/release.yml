@@ -32,8 +32,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-
-      - name: Build with Gradle
+          
         # В Linux мы используем стандартный shell (bash), shell: cmd удален
       - name: Build with Gradle
         run: |
