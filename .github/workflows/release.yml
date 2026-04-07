@@ -6,7 +6,9 @@ on:
 
 jobs:
   build:
+    # Указываем твой Self-hosted раннер в VirtualBox
     runs-on: self-hosted
+    
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -32,16 +34,20 @@ jobs:
           java-version: '17'
 
       - name: Build with Gradle
-        shell: cmd
-        # Запускаем Gradle через Java напрямую, используя classpath
+        # В Linux мы используем стандартный shell (bash), shell: cmd удален
         run: |
-          java -cp gradle/wrapper/gradle-wrapper.jar org.gradle.wrapper.GradleWrapperMain assembleDebug --no-daemon -Pandroid.builder.sdkDownload=true
+          # Даем права на запуск скрипту сборки
+          chmod +x gradlew
+          # Запускаем сборку через локальный gradle wrapper
+          ./gradlew assembleDebug --no-daemon -Pandroid.builder.sdkDownload=true
         env:
+          # Выделяем 4ГБ оперативной памяти для Java внутри виртуалки
           GRADLE_OPTS: "-Xmx4g -Dorg.gradle.jvmargs=-Xmx4g"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: debug-APK
-          path: "**/*.apk"
+          # Путь к готовому файлу в папке проекта
+          path: "TMessagesProj/build/outputs/apk/debug/*.apk"
           if-no-files-found: error
