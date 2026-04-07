@@ -2,14 +2,11 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        maven { url "https://maven.google.com" }
-        maven { url "https://dl.google.com/dl/android/maven2/" }
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.4.2'
-        classpath 'com.google.gms:google-services:4.3.15'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.5'
+        // остальные зависимости...
     }
 }
 
@@ -17,7 +14,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven { url "https://maven.google.com" }
-        maven { url "https://dl.google.com/dl/android/maven2/" }
+        maven { url "https://jitpack.io" }
     }
 }
