@@ -35,9 +35,11 @@ jobs:
 
       - name: Build with Gradle
         # В Linux мы используем стандартный shell (bash), shell: cmd удален
+      - name: Build with Gradle
         run: |
-         chmod +x gradlew
-         ./gradlew :TMessagesProj:assembleDebug --no-daemon -Pandroid.builder.sdkDownload=true
+          chmod +x gradlew
+          # Команда assembleDebug без двоеточий соберет все доступные модули
+          ./gradlew assembleDebug --no-daemon -Pandroid.builder.sdkDownload=true
         env:
           # Выделяем 4ГБ оперативной памяти для Java внутри виртуалки
           GRADLE_OPTS: "-Xmx4g -Dorg.gradle.jvmargs=-Xmx4g"
